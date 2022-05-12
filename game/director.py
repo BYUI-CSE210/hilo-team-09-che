@@ -26,10 +26,9 @@ class Director:
             self (Director): an instance of Director.
         """
         self.is_playing = True
-        self.player_score = 300
-        self.total_score = 0
+        self.score = 300
         self.user_input = ""
-        self.previous_card= 0
+        self.previous_card = 0
 
         #Call the class to obtain a card value.
         card = Croupier()
@@ -77,6 +76,15 @@ class Director:
         """
         if not self.is_playing:
             return
+        
+        if self.user_input.lower() == "h" and self.card > self.previous_card:
+            self.score += 100
+        
+        elif self.user_input.lower() == "l" and self.card < self.previous_card:
+            self.score += 100
+
+        else:
+            self.score -= 75
 
     def do_outputs(self):
         """Displays the next card value. Also asks the player if they want 
@@ -88,8 +96,6 @@ class Director:
 
         #if false, the game is over 
         if not self.is_playing:
-            print("Game Over")
-            print("Thanks for Playing!")
             return 
         
         #print the score
@@ -109,8 +115,6 @@ class Director:
                 elif retry.lower() == "n":
                     self.is_playing = False
                     token = 0
-                    print("Game Over")
-                    print("Thanks for Playing!")
 
                 else:
                     print("please insert a valid letter.")
