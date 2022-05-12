@@ -68,7 +68,7 @@ class Director:
         print(f"The next card is: {self.card}")
         print()
 
-    def do_updates(self):
+    def do_updates(self): 
         """Updates the player's score.
 
         Args:
