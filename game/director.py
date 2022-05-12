@@ -14,8 +14,8 @@ class Director:
     Attributes:
         is_playing (boolean): Whether or not the game is being played.
         card (int): the value of a card
+        previous_card: the value of the previous card
         score (int): the score at the end of the score
-        total_score (int): the total score of the player
         user_input (str): input by the user (h/l) 
     """
 
@@ -87,7 +87,7 @@ class Director:
             self.score -= 75
 
     def do_outputs(self):
-        """Displays the next card value. Also asks the player if they want 
+        """Displays the player score. Also asks the player if they want 
         to play again. 
 
         Args:
