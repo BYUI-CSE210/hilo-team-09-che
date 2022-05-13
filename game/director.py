@@ -1,4 +1,4 @@
-
+from game.croupier import Croupier
 """
     Update the code and the comments as you change the code for your game.  You will be graded on following the
     Rules listed and your program meets all of the Requirements found on 
@@ -13,6 +13,10 @@ class Director:
 
     Attributes:
         is_playing (boolean): Whether or not the game is being played.
+        card (int): the value of a card
+        previous_card: the value of the previous card
+        score (int): the score at the end of the score
+        user_input (str): input by the user (h/l) 
     """
 
     def __init__(self):
@@ -22,6 +26,14 @@ class Director:
             self (Director): an instance of Director.
         """
         self.is_playing = True
+        self.score = 300
+        self.user_input = ""
+        self.previous_card = 0
+
+        #Call the class to obtain a card value.
+        card = Croupier()
+        card.give_number()
+        self.card =  card.value
 
     def start_game(self):
         """Starts the game by running the main game loop.
@@ -29,20 +41,34 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
-        while self.is_playing:
+        while self.is_playing:     
             self.get_inputs()
             self.do_updates()
             self.do_outputs()
 
+        print("Game Over")
+        print("Thanks for Playing!")
+
     def get_inputs(self):
-        """Ask the user if they want to roll.
+        """Ask the user if they believe is High or Low.
 
         Args:
             self (Director): An instance of Director.
-        """
-        pass
+        """ 
+        #First Card
+        self.previous_card = self.card
+        print(f"The card is: {self.previous_card}")
+        self.user_input = input("Higher or Lower? H/L: ")
 
-    def do_updates(self):
+        #Second card 
+        card = Croupier()
+        card.give_number()
+        self.card =  card.value
+
+        print(f"The next card is: {self.card}")
+        print()
+
+    def do_updates(self): 
         """Updates the player's score.
 
         Args:
@@ -50,12 +76,49 @@ class Director:
         """
         if not self.is_playing:
             return
+        
+        if self.user_input.lower() == "h" and self.card > self.previous_card:
+            self.score += 100
+        
+        elif self.user_input.lower() == "l" and self.card < self.previous_card:
+            self.score += 100
+
+        else:
+            self.score -= 75
 
     def do_outputs(self):
-        """Displays the dice and the score. Also asks the player if they want to roll again. 
+        """Displays the player score. Also asks the player if they want 
+        to play again. 
 
         Args:
             self (Director): An instance of Director.
         """
+
+        #if false, the game is over 
         if not self.is_playing:
-            return
+            return 
+        
+        #print the score
+        print(f"Score: {self.score}")
+
+        #if the score is greater than zero, ask if the user
+        #wants to play again
+        if self.score > 0:
+            token = 1
+            while token == 1:
+                retry = input("Play again? (Y/N): ")
+                
+                if retry.lower() == "y":
+                    self.is_playing = True
+                    token = 0
+
+                elif retry.lower() == "n":
+                    self.is_playing = False
+                    token = 0
+
+                else:
+                    print("please insert a valid letter.")
+
+        else:
+            self.is_playing = False
+        print()
